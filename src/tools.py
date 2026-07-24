@@ -1,7 +1,5 @@
 import datetime
 import json
-import re
-from decimal import Decimal
 
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import tool
@@ -9,96 +7,118 @@ from langchain_openai import OpenAIEmbeddings
 from sqlmodel import select
 
 from src.database import get_session
-from src.models import FAQ, Cliente, Contacto, Transaccion
-from src.services.categorizador import obtener_categoria
+from src.models import FAQ, Contacto
 from src.services.client import read_client_info
-from src.services.transactions import read_transactions_info
+from src.services.transactions import make_transfer, read_transactions_info
 
+#In this file we can find the tools which the llm has access to, the logic is separated in the folder services.
 
 @tool
 def read_client_information(config: RunnableConfig) -> str:
     """
-    Utiliza esta herrmienta si necesitas algo de información del usuario, ya sea porque te lo ha pedido,
-    o porque lo consideras necesario para responder. 
-    Lee la información del usuario conectado, la información incluye el id de usuario, su nombre, su email, su saldo, su teléfono y su ciudad.
+    Retrieve profile information for the currently authenticated user.
+
+    Use this tool whenever you need details about the logged-in user, either
+    because they explicitly asked for it or because it is required to answer a query.
+    
+    The retrieved details include the user's ID, full name, email address,
+    current account balance, phone number, and city.
+
+    Args:
+        config (RunnableConfig): Runtime configuration automatically injected by LangChain
+            containing context metadata, such as the authenticated user ID.
+
+    Returns:
+        str: A string with the user's profile information or an error message if the
     """
     client_id = config.get("configurable", {}).get("user_id")
 
     if not client_id:
-        return "Cliente no autentificado, no se pude continuar."
+        return "Unauthenticated client, can't proceed."
 
     return read_client_info(client_id)
 
 @tool
 def get_current_date_and_time():
-    """Devuelve la fecha y la hora actual en formato ISO 8601"""
+    """
+    Retrieve the current date and time in UTC formatted as an ISO 8601 string.
+
+    Use this tool whenever you need to know the present date, time, or year,
+    especially for calculating relative dates (e.g., 'today', 'yesterday',
+    'this month', or checking recent transactions).
+
+    Returns:
+        str: The current UTC timestamp in ISO 8601 format (e.g., '2026-07-24T19:23:49+00:00').
+    """
     return datetime.datetime.now(tz=datetime.UTC).isoformat()
     
 @tool
-def read_transactions_information(config: RunnableConfig, start_date: str|None = None, end_date: str|None = None, min_amount: float|None = None, max_amount: float|None = None, category:str|None = None) -> str:
+def read_transactions_information( config: RunnableConfig,
+                                start_date: str|None = None,
+                                end_date: str|None = None, 
+                                min_amount: float|None = None, 
+                                max_amount: float|None = None, 
+                                category:str|None = None
+                                ) -> str:
     """
-    Devuelve las transacciones filtradas del usuario activo, puedes clasificar por fechas, cantidad de transaccion o categoría.
-    Las fechas están en formato 'YYYY-MM-DD' y el dinero en euros.
+    Retrieve and filter transaction history for the currently authenticated user.
+
+    Use this tool whenever the user asks about their past spending, income, or transaction
+    history. You can apply filters by date range, transaction amount (in Euros €),
+    or category.
+
+    Args:
+        config (RunnableConfig): Runtime configuration automatically injected by LangChain
+            containing context metadata, such as the authenticated user ID.
+        start_date (str | None, optional): Start date for filtering in 'YYYY-MM-DD' format.
+            Defaults to None.
+        end_date (str | None, optional): End date for filtering in 'YYYY-MM-DD' format.
+            Defaults to None.
+        min_amount (float | None, optional): Minimum transaction amount in Euros (€).
+            Defaults to None.
+        max_amount (float | None, optional): Maximum transaction amount in Euros (€).
+            Defaults to None.
+        category (str | None, optional): Category name to filter transactions
+            (e.g., 'supermarket', 'restaurants', 'transfers'). Defaults to None.
+
+    Returns:
+        str: A string listing the matching transactions or an error message if the
+            user is not authenticated.
     """
 
-    # Esto lo hacemos para la selección del usuario que tiene la sesión iniciada
     client_id = config.get("configurable", {}).get("user_id")
 
-    # Si no encontramos un usuario no podemos continuar.
     if not client_id:
-        return "Cliente no autetificado, no se puede continuar."
+        return "Unauthenticated client, can't proceed."
 
     return read_transactions_info(client_id,start_date,end_date,min_amount,max_amount,category)
 
 @tool
-def make_transfer(config: RunnableConfig, cantidad: float, concepto: str, tel: str) -> str:
+def make_transfer_tool(config: RunnableConfig, amount: float, concepto: str, tel: str) -> str:
     """
-    Hace una transferencia para un cierto número de teléfono, el cual debe estar en los contactos, una cierta cantidad y un concepto.
-    Usa la misma herramienta si tuvieses que hacer un bizum.
+    Execute a money transfer or Bizum to a saved contact using their phone number.
+
+    Use this tool whenever the user asks to send money, make a transfer, or send a 'Bizum'
+    to a recipient using their phone number. The recipient must be in the user's contacts.
+
+    Args:
+        config (RunnableConfig): Runtime configuration automatically injected by LangChain
+            containing context metadata, such as the authenticated user ID.
+        amount (float): The amount of money to transfer in Euros (€). Must be greater than 0.
+        concepto (str): The description, concept, or note for the transfer.
+        tel (str): The recipient's phone number in E.164 format (e.g., '+34612345678').
+
+    Returns:
+        str: A string indicating whether the transfer was successful (including the updated balance)
+            or an error message if the transaction failed.
     """
 
     client_id = config.get("configurable", {}).get("user_id")
 
     if not client_id:
-        return "Cliente no autentificado, no se puede continuar"
+        return "Unautheticated client, can't proceed."
     
-    if cantidad <= 0:
-        return "El importe debe ser positivo"
-    
-    # Validamos los números de teléfono introducidos.
-    # ^ inicio de regex
-    # \+? 1 o 0 mases
-    # \d{9,15} 9 a 15 dígitos
-    if not tel or not re.match(r"^\+?\d{9,15}$", tel):
-        return "número de teléfono introducido es incorrecto"
-
-    with next(get_session()) as session:
-        amount:Decimal = Decimal(str(cantidad))
-        statement = select(Cliente).where(Cliente.id == client_id)
-        result = session.exec(statement).first()
-
-        if result:
-            # Buscamos el contacto.
-            contacto_destino = next((c for c in result.contactos if c.tel == tel), None)
-            if result.saldo_actual >= amount and contacto_destino:
-                result.saldo_actual -= amount
-
-                # Añadimos el movimiento a la base de datos.
-                nueva_trans = Transaccion(
-                    tipo="transferencia_enviada",
-                    monto=amount,
-                    detalles=concepto,
-                    categoria=obtener_categoria(concepto),
-                    cliente_id=client_id,
-                )
-
-                session.add(nueva_trans)
-                session.commit()
-                return f"Transfer successful. New balance for client {client_id}: {result.saldo_actual}"
-            else:
-                return "Fondos insuficientes."
-        else:
-            return "No se encontró el contacto."
+    return make_transfer (client_id,amount,concepto,tel)
 
 
 @tool
@@ -213,7 +233,7 @@ tools = [
     read_client_information,
     get_current_date_and_time,
     read_transactions_information,
-    make_transfer,
+    make_transfer_tool,
     get_bank_faqs,
     get_contacts,
     delete_contact,
