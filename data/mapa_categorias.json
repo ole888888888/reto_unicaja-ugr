@@ -1,0 +1,19 @@
+{
+    "mercadona": "Supermercado",
+    "carrefour": "Supermercado",
+    "lidl": "Supermercado",
+    "alcampo": "Supermercado",
+    "netflix": "Suscripciones",
+    "spotify": "Suscripciones",
+    "uber": "Transporte",
+    "cabify": "Transporte",
+    "repsol": "Transporte",
+    "cepsa": "Transporte",
+    "restaurante": "Hostelería",
+    "bar": "Hostelería",
+    "hotel": "Hostelería",
+    "cafeteria": "Hostelería",
+    "gimnasio": "Salud/Deporte",
+    "farmacia": "Salud/Deporte"
+
+}

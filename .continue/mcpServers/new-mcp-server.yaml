@@ -1,0 +1,6 @@
+mcpServers:
+  - name: langchain-server
+    command: npx
+    args:
+      - -y
+      - "@langchain/mcp-server" 
