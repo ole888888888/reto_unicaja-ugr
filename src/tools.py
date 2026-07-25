@@ -1,14 +1,14 @@
 import datetime
-import json
 
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import tool
-from langchain_openai import OpenAIEmbeddings
 from sqlmodel import select
 
 from src.database import get_session
-from src.models import FAQ, Contacto
+from src.models import Contacto
 from src.services.client import read_client_info
+from src.services.contact import get_contacts_info
+from src.services.faq import get_faq_answer
 from src.services.transactions import make_transfer, read_transactions_info
 
 #In this file we can find the tools which the llm has access to, the logic is separated in the folder services.
@@ -25,11 +25,11 @@ def read_client_information(config: RunnableConfig) -> str:
     current account balance, phone number, and city.
 
     Args:
-        config (RunnableConfig): Runtime configuration automatically injected by LangChain
-            containing context metadata, such as the authenticated user ID.
+        config (RunnableConfig): Runtime configuration containing context metadata,
+            such as the authenticated user ID.
 
     Returns:
-        str: A string with the user's profile information or an error message if the
+        str: A string with the user's profile information or an error message should the information not be found.
     """
     client_id = config.get("configurable", {}).get("user_id")
 
@@ -68,8 +68,8 @@ def read_transactions_information( config: RunnableConfig,
     or category.
 
     Args:
-        config (RunnableConfig): Runtime configuration automatically injected by LangChain
-            containing context metadata, such as the authenticated user ID.
+        config (RunnableConfig): Runtime configuration containing context metadata, 
+            such as the authenticated user ID.
         start_date (str | None, optional): Start date for filtering in 'YYYY-MM-DD' format.
             Defaults to None.
         end_date (str | None, optional): End date for filtering in 'YYYY-MM-DD' format.
@@ -102,8 +102,7 @@ def make_transfer_tool(config: RunnableConfig, amount: float, concepto: str, tel
     to a recipient using their phone number. The recipient must be in the user's contacts.
 
     Args:
-        config (RunnableConfig): Runtime configuration automatically injected by LangChain
-            containing context metadata, such as the authenticated user ID.
+        config (RunnableConfig): Runtime configuration containing context metadata, such as the authenticated user ID.
         amount (float): The amount of money to transfer in Euros (€). Must be greater than 0.
         concepto (str): The description, concept, or note for the transfer.
         tel (str): The recipient's phone number in E.164 format (e.g., '+34612345678').
@@ -124,67 +123,42 @@ def make_transfer_tool(config: RunnableConfig, amount: float, concepto: str, tel
 @tool
 def get_bank_faqs(query: str) -> str:
     """
-    Accede a las preguntas frecuentes del banco para el que trabajas,
-    Usa esta herrmienta siempre que el usuario pregunte algo a lo que tú no puedas responder directamente,
-    si tú tampoco consigues encontrar nada relevante en tu base de datos dirígelos al contacto oficial del banco,
-    priorizamos esto a que estén mal las respuestas.
+    Searches the bank's official Frequently Asked Questions (FAQ) database.
+
+    Use this tool whenever the user asks specific questions about bank services,
+    products, accounts, fees, or operational procedures to retrieve official answers.
+
+    Args:
+        query (str): The user's question or topic keywords to search in the FAQ database.
+
+    Returns:
+        str: Relevant official FAQ matching information or a not-found message.
     """
-    embedder = OpenAIEmbeddings(model="text-embedding-3-small")
-
-    try:
-        vector_usuario = embedder.embed_query(query)
-
-    except Exception:
-        return "Error al procesar la consulta con el servicio de IA"
-
-    with next(get_session()) as session:
-        statement = (
-            select(FAQ).order_by(FAQ.embedding.cosine_distance(vector_usuario)).limit(2)
-        )
-
-        resultados = session.exec(statement).all()
-
-        if not resultados:
-            return "No se ha encontrado información relevante en el manual del banco"
-
-        respuesta_herramienta = (
-            "Información oficial encontrada en las FAQs de Unicaja:\n"
-        )
-        for faq in resultados:
-            respuesta_herramienta += f"\n- Pregunta frecuente: {faq.pregunta}\n Respuesta oficial: {faq.respuesta}\n"
-
-        return respuesta_herramienta
+    return get_faq_answer(query)
 
 @tool 
 def get_contacts (config: RunnableConfig, name: str|None) -> str:
     """
-    Devuelve todos los contactos que tiene el usuario. Si te pide los usuarios se los pasas.
-    Si te pide uno solo, utiliza esta herrmienta pero extrae solo el que te pide.
+    Retrieves saved contacts (names and phone numbers) for the authenticated user.
+
+    Use this tool when the user asks for their contact list, or needs to find a 
+    specific contact's phone number (e.g., before making a transfer or sending a message).
+
+    Args:
+        name (str | None, optional): Name or keyword to filter a specific contact. 
+            Pass `None` or leave empty to retrieve all contacts. Defaults to None.
+
+    Returns:
+        str: A JSON string array with matching contact details `[{"nombre": ..., "tel": ...}]`,
+            or an error/not-found message.
     """
-    
+        
     client_id = config.get("configurable", {}).get("user_id")
 
     if not client_id:
         return "Unauthenticated client, can't procede."
 
-    else:
-        with next(get_session()) as session:
-            statement = select(Contacto).where(Contacto.cliente_id == client_id)
-            resultados = session.exec(statement).all()
-
-            if resultados:
-                contactos_json = [
-                    {
-                        "nombre": resultado.nombre,
-                        "tel": resultado.tel
-                    }
-                    for resultado in resultados
-                ]
-
-                return json.dumps(contactos_json,ensure_ascii=False)
-            
-            else:
-                return "No se encontró ningún contacto."
+    return get_contacts_info(client_id, name)
 
 @tool
 def add_contact (config: RunnableConfig, nombre: str|None, tel: str) -> str:

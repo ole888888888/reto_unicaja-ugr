@@ -5,24 +5,21 @@ from sqlmodel import select
 from src.database import get_session
 from src.models import Cliente
 
-# Este archivo contiene toda la lógica de la información de cliente.
-# De esta manera separamos la lógica como tal de las herrmientas a las que llama la IA.
+# This file contains all logic regarding client information.
+# In this way we can separate the logic from the tools the agent calls.
 
-def read_client_info(client_id: int|None) -> str:
-    # Simple medidad de seguridad, para que no se llame sin un cliente.
-    if not client_id:
-        return "No se puede continuar sin un cliente"
-
+def read_client_info(client_id: int) -> str:
     with next(get_session()) as session:
         statement = select(Cliente).where(Cliente.id == client_id)
         result = session.exec(statement).first()
 
+        # We return the information retrieved in json format.
         if result:
             cliente_res = {
                 "id": result.id,
                 "nombre": result.nombre,
                 "email": result.email,
-                "saldo_actual": result.saldo_actual,
+                "saldo_actual": float(result.saldo_actual),
                 "telefono": result.telefono,
                 "ciudad": result.ciudad,  
             }
@@ -30,4 +27,4 @@ def read_client_info(client_id: int|None) -> str:
             return json.dumps(cliente_res, ensure_ascii=False)
 
         else:
-            return "No se encontró el cliente."
+            return "Could not find the client."
