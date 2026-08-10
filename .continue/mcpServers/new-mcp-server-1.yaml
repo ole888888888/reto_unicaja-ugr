@@ -1,7 +1,0 @@
-name: LangChain Docs Server
-version: 0.0.1
-schema: v1
-mcpServers:
-  - name: LangChain Docs
-    type: streamable-http
-    url: https://docs.langchain.com/mcp
