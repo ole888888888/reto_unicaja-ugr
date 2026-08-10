@@ -1,11 +1,10 @@
 from langchain.agents import create_agent
 from langchain.chat_models import init_chat_model
 from langgraph.checkpoint.memory import InMemorySaver
-
 from src.tools import tools as tool_list
 
 # Initialize the model
-llm = init_chat_model(model="gpt-4o", temperature=0)
+llm = init_chat_model(model="gpt-5-mini", temperature=0)
 
 # LLM instructions are configured in the system_instructions
 system_instructions = (

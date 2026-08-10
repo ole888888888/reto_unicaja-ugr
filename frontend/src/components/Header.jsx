@@ -7,7 +7,7 @@ export function Header({ theme, toggleTheme }) {
     <header style={styles.header}>
       <div style={styles.headerTitle}>
         <img src={"/favicon.ico"} style={{width: '32px', height: '32px'}}/>
-        <h1 style={{ margin: 0, fontSize: '1.2rem' }}>AVA (Asistente Virtual de Acompañamiento)</h1>
+        <h1 style={{ margin: 0, fontSize: '1.2rem' }}>ADA (Asistente Digital de Acompañamiento)</h1>
       </div>
       <button onClick={toggleTheme} style={styles.themeButton}>
         <img 

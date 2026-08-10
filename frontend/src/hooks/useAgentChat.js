@@ -31,6 +31,7 @@ export function useAgentChat() {
 
     // Add the user's request.
     setMessages((prev) => [...prev, { role: 'user', content: userPrompt }]);
+    setMessages((prev) => [...prev, {role: 'assistant', type: 'text', content: ''}])
 
     try {
       const response = await fetch('http://127.0.0.1:8000/api/agent', {
@@ -74,7 +75,13 @@ export function useAgentChat() {
           } 
           // Process the data.
           else if (line.startsWith('data: ')) {
-            const dataContent = line.replace('data: ', '');
+            let dataContent = line.replace('data: ', '');
+
+            // This allows newlines to be printed correctly
+            if (dataContent === '') {
+              dataContent = '\n'
+            }
+
             // chart processing.
             if (currentEvent === "chart"){
               try {

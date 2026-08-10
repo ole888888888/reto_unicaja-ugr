@@ -12,10 +12,6 @@ export function ChatMessage({ message, isLoading, isLast, chartTheme }) {
   const isUser = message.role === 'user';
   const content = message.content || (isLoading && isLast ? 'Escribiendo...' : '');
 
-  if (message.type === 'message' && !content){
-    return null;
-  }
-
   if (message.type === 'chart' && message.chartConfig) {
     const chartOption = 
       typeof message.chartConfig === 'string' ? JSON.parse(message.chartConfig) : message.chartConfig;
