@@ -48,7 +48,8 @@ async def run_python_agent(prompt: str):
         stream_mode="messages"
     ):
         if isinstance(chunk, AIMessageChunk) and chunk.content and isinstance(chunk.content, str):
-            yield f"data: {chunk.content}\n\n"
+            payload = json.dumps({"text": chunk.content})
+            yield f"data: {payload}\n\n"
             await asyncio.sleep(0)
         elif isinstance (chunk, ToolMessage):
             if chunk.name=="create_chart":
