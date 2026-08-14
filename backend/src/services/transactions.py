@@ -1,9 +1,9 @@
+# Have to add Human in the loop for these functions.
 import json
 from datetime import datetime
 from decimal import Decimal
 
 from sqlmodel import select
-
 from src.database import get_session
 from src.models import Cliente, Transaccion
 from src.services.categorizador import obtener_categoria
@@ -39,7 +39,7 @@ def read_transactions_info (client_id: int,
             .where(Transaccion.cliente_id == client_id)
         )
 
-        # We add information to the statement if it is necessary.
+        # We add information to the statement would it be necessary.
         if start_date:
             compared_date = datetime.fromisoformat(start_date)
             statement = statement.where(Transaccion.fecha >= compared_date)
@@ -61,7 +61,7 @@ def read_transactions_info (client_id: int,
         if category:
             statement = statement.where(Transaccion.categoria == category)
 
-        statement = statement.order_by(Transaccion.fecha.desc()).limit(20) #type: ignore
+        statement = statement.order_by(Transaccion.fecha.desc()).limit(20) # Maybe the limit should be changed for charting functions.
 
         # We execute the statement built from all the previous steps.
         result = session.exec(statement).all()
@@ -138,7 +138,7 @@ def make_transfer(client_id: int, amount_f:float, concepto: str, tel: str) -> st
                 return f"Transfer has been completed succesfully, new balance {result.nombre}: {result.saldo_actual}."
             
             else:
-                return f"No se encontró el contacto con número {tel} entre tus contactos."
+                return f"Couldn't find the contact with phone number {tel} in your contacts."
             
         return f"Could not find the client with id {client_id}."
         

@@ -3,7 +3,6 @@ from typing import Any
 
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import tool
-
 from src.services.charts import eChartInfo, get_echart_config, seriesInfo
 from src.services.client import read_client_info
 from src.services.contact import (

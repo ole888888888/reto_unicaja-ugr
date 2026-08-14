@@ -5,12 +5,15 @@ import RenderTable from './RenderTable';
 import darkTheme from '../assets/dark_theme.json';
 import lightTheme from '../assets/light_theme.json';
 
-echarts.registerTheme('darkTheme', darkTheme);
-echarts.registerTheme('lightTheme', lightTheme);
+echarts.registerTheme('darkCustom', darkTheme)
+echarts.registerTheme('lightCustom',lightTheme)
 
 export function ChatMessage({ message, isLoading, isLast, chartTheme }) {
   const isUser = message.role === 'user';
-  const content = message.content || (isLoading && isLast ? 'Escribiendo...' : '');
+  const content = message.content || (isLoading && isLast ? 'Pensando...' : '');
+
+  // To avoid printing empty bubbles on screen.
+  if (content === '' && message.type === 'text') return
 
   if (message.type === 'chart' && message.chartConfig) {
     const chartOption = 
@@ -20,7 +23,7 @@ export function ChatMessage({ message, isLoading, isLast, chartTheme }) {
       <div style={styles.messageWrapper}>
         <div style={{ ...styles.bubble, ...styles.assistantBubble, width: '100%' }}>
           <EChartsReact
-          theme={chartTheme==="dark"?'darkTheme':'lightTheme'} 
+          theme={chartTheme==="dark"?'darkCustom':'lightCustom'} 
           option={chartOption} 
           style={{ width: '100%', height: '400px' }} 
           notMerge={true}

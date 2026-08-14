@@ -1,4 +1,3 @@
-# models.py
 from datetime import UTC, datetime
 from decimal import Decimal
 
@@ -52,7 +51,7 @@ class FAQ(SQLModel, table=True):
         return f"Question: {self.pregunta}\nAnswer: {self.respuesta}"
 
 class Contacto(SQLModel, table=True):
-    __tablename__ = "contactos" # Sólo se usa para especificar el nombre de la tabla, por defecto se pone el nombre de la clase en minúscula.
+    __tablename__ = "contactos"
 
     id: int|None = Field(default=None, primary_key=True)
     nombre: str|None = Field(default=None)

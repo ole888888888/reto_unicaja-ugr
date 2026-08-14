@@ -1,13 +1,12 @@
 import json
 
 from sqlmodel import select
-
 from src.database import get_session
 from src.models import Cliente
 
+
 # This file contains all logic regarding client information.
 # In this way we can separate the logic from the tools the agent calls.
-
 def read_client_info(client_id: int) -> str:
     with next(get_session()) as session:
         statement = select(Cliente).where(Cliente.id == client_id)

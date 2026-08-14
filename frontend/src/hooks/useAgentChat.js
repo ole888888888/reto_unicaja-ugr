@@ -77,11 +77,6 @@ export function useAgentChat() {
           else if (line.startsWith('data: ')) {
             let dataContent = line.replace('data: ', '');
 
-            // This allows newlines to be printed correctly
-            if (dataContent === '') {
-              dataContent = '\n'
-            }
-
             // chart processing.
             if (currentEvent === "chart"){
               try {
@@ -112,7 +107,8 @@ export function useAgentChat() {
             } 
             // Message processing.
             else {
-              accumulatedText += dataContent;     
+              const data = JSON.parse(dataContent)
+              accumulatedText += data.text;
               setMessages((prev) => {
                 const lastMsg = prev[prev.length - 1];
 

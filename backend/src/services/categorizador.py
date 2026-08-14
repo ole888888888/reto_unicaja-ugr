@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 with open("data/datos_banco.json", mode="r", encoding="utf-8") as f:
     MAPA_CATEGORIAS = json.load(f)
 
-# Creamos todos los tipos de categoría, para no darle libertad completa a la ia.
+# This is a list of all the categories as to not give the ai the liberty to choose its own categories.
 class categoria_enum(str, Enum):
     SUPERMERCADO = "Supermercado"
     HOSTELERIA = "Hostelería"
@@ -32,10 +32,11 @@ class categoria_enum(str, Enum):
     TRABAJO = "Trabajo"
     OTROS = "Otros"
 
-# Tenemos que crear un BaseModel de pydantic para poder darle estructura a la salida del agente.
+# We create a pydantic BaseModel to structure the output of the ai properly.
 class ClasificacionTransaccion (BaseModel):
     categoria: categoria_enum = Field(description="Es la categoría de la transacción, que se debe rellenar.")
 
+# Function that creates the agent which manages the categories.
 def obtener_categoria_agente(concepto:str) -> str:
     concepto = concepto.lower()
 
@@ -47,7 +48,7 @@ def obtener_categoria_agente(concepto:str) -> str:
 
     agent = create_agent(
         model = "gpt-4o-mini",
-        response_format = ClasificacionTransaccion,
+        response_format = ClasificacionTransaccion, # Make sure it follows the pydantic BaseModel.
         system_prompt=instructions,
         )
 
@@ -57,6 +58,8 @@ def obtener_categoria_agente(concepto:str) -> str:
 
     return salida["structured_response"].categoria.value
 
+# This function allows for token optimization by getting the categories from a list with common transaction names.
+# If it doesn't find anything it does use the above function.
 def obtener_categoria(concepto: str) -> str:
     concepto = concepto.lower()
 

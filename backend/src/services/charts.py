@@ -4,6 +4,9 @@ from typing import Any
 from pydantic import BaseModel, Field
 
 
+# Our data follows this structure, we have three types of charts (can be expanded),
+# We then have different series of data for each line or graph we make,
+# And finally we have a more general class with the different series and some other options.
 class chartType (str, Enum):
     LINE = "line"
     BAR = "bar"
@@ -37,18 +40,31 @@ def get_echart_config(
     Returns:
         dict[str, Any]: An ECharts option dictionary suitable for JSON serialization.
     """
+    # Pie charts are very different from the rest so they need their own bool.
     is_pie = any(s.type == chartType.PIE for s in series)
+
+    # We store the series with their config in this array.
+    formatted_series = []
+
+    for s in series:
+        s_dict = s.model_dump(mode="json", exclude_none=True, by_alias=True)
+
+        if s.type == chartType.LINE:
+            s_dict.setdefault("areaStyle", {})
+            s_dict.setdefault("smooth", True)
+
+        formatted_series.append(s_dict)
 
     option: dict[str, Any] = {
         "tooltip": {"trigger": "axis" if x_axis_categories else "item"},
         "legend": {
-            "bottom": "0px",
+            "bottom": 0,
             "left": "center",
             "type": "scroll"
         },
-        "series": [s.model_dump(mode="json") for s in series],
+        "series": formatted_series,
         }
-  
+
     if not is_pie:
         option["xAxis"] = {"type": "category", "data": x_axis_categories}
         option["yAxis"] = {"type": "value"}

@@ -1,7 +1,6 @@
 import json
 
 from sqlmodel import func, select
-
 from src.database import get_session
 from src.models import Contacto
 from src.services.phone import verify_phone_number

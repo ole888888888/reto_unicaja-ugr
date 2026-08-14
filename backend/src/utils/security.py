@@ -1,3 +1,4 @@
+# Functions for authentication further down the line.
 from passlib.context import CryptContext
 
 # We are going to use passlib to hash the passwords in our database,

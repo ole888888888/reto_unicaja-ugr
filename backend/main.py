@@ -2,20 +2,18 @@ import asyncio
 import json
 
 from dotenv import load_dotenv
-
-load_dotenv()
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from langchain_core.messages import AIMessageChunk, ToolMessage
 from pydantic import BaseModel
-
-# 2. Ahora al importar src.agent y src.database ya leerán la URL de PostgreSQL del .env
 from src.agent import agent_executor
 from src.database import init_db
 
-# Inicializamos la estructura de la base de datos
+# Import enviroment variables.
+load_dotenv()
+
+# We initialize the database just once at the beggining
 init_db()
 
 app = FastAPI()
@@ -30,13 +28,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Using a BaseModel allows us to add more options in the future.
 class ChatRequest(BaseModel):
     prompt: str
 
+# User config, with their id and conversation thread.
 config = {
     "configurable": {
         "thread_id": "0001",
-        "user_id": 1  # ID del usuario Juan Pérez
+        "user_id": 1 
     }
 }
 
@@ -47,6 +47,7 @@ async def run_python_agent(prompt: str):
         config=config,
         stream_mode="messages"
     ):
+        # We process data differently depending on the type of data it is.
         if isinstance(chunk, AIMessageChunk) and chunk.content and isinstance(chunk.content, str):
             payload = json.dumps({"text": chunk.content})
             yield f"data: {payload}\n\n"
@@ -68,6 +69,7 @@ async def run_python_agent(prompt: str):
                 )
                 yield f"event: table\ndata: {table_json}\n\n"
 
+# This is the function which allows our frontend to speak to our backend.
 @app.post("/api/agent")
 async def chat_endpoint(request: ChatRequest) -> StreamingResponse:
     return StreamingResponse(

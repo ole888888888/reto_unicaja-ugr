@@ -1,3 +1,4 @@
+# Functions for future authentication use.
 import os
 
 import jwt
