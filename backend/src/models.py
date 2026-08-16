@@ -1,8 +1,9 @@
 from datetime import UTC, datetime
 from decimal import Decimal
+from enum import Enum as en
 
 from pgvector.sqlalchemy import Vector
-from sqlmodel import Column, Field, Relationship, SQLModel
+from sqlmodel import Column, Enum, Field, Relationship, SQLModel
 
 SQLModel.metadata.clear()
 
@@ -22,11 +23,16 @@ class Cliente(SQLModel, table=True):
     def __repr__ (self):
         return f"Cliente {self.id} - {self.nombre} ({self.email},{self.telefono})"
 
+# Class that determines the cashflow of the transaction.
+class Direction (str, en): 
+    INFLOW = "INFLOW"
+    OUTFLOW = "OUTFLOW"
+
 class Transaccion(SQLModel, table=True):
     __tablename__ = "transacciones"
     
     id: int | None = Field(default=None, primary_key=True)
-    tipo: str  # 'deposito', 'retiro', 'transferencia_enviada'
+    direction: Direction = Field(sa_column=Column(Enum(Direction)))
     monto: Decimal = Field(gt=0 ,max_digits=12, decimal_places=2)
     categoria: str|None = Field(default = None)
     detalles: str | None = Field(default=None) # Ej: "Pago de alquiler", "Bizum"

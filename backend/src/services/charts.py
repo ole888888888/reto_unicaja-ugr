@@ -37,6 +37,9 @@ def get_echart_config(
             When provided, sets the x-axis data and switches the tooltip trigger
             to 'axis' instead of 'item'. Defaults to None.
 
+    Notes:
+        You must take chronological orders seriously when needed, don't just print the data instantly, check if it makes sense.
+
     Returns:
         dict[str, Any]: An ECharts option dictionary suitable for JSON serialization.
     """
@@ -68,8 +71,5 @@ def get_echart_config(
     if not is_pie:
         option["xAxis"] = {"type": "category", "data": x_axis_categories}
         option["yAxis"] = {"type": "value"}
-
-    if title:
-        option.update({"title": {"text": title}})
 
     return option

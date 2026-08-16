@@ -83,178 +83,382 @@
     ],
     "transacciones": [
         {
-            "tipo": "deposito",
+            "direction": "inflow",
             "monto": 5000.0,
             "cliente_id": 1,
-            "detalles": "Nómina Mensual TechCorp"
+            "detalles": "Nómina Mensual TechCorp",
+            "fecha": "2026-08-01T09:00:00+00:00"
         },
         {
-            "tipo": "retiro",
+            "direction": "outflow",
             "monto": 150.0,
             "cliente_id": 1,
-            "detalles": "Cajero Automático Banco Central"
+            "detalles": "Cajero Automático Banco Central",
+            "fecha": "2026-08-01T13:07:00+00:00"
         },
         {
-            "tipo": "transferencia_enviada",
+            "direction": "outflow",
             "monto": 1200.0,
             "cliente_id": 1,
-            "detalles": "Pago Alquiler Departamento"
+            "detalles": "Pago Alquiler Departamento",
+            "fecha": "2026-08-01T17:14:00+00:00"
         },
         {
-            "tipo": "retiro",
+            "direction": "outflow",
             "monto": 85.5,
             "cliente_id": 1,
-            "detalles": "Supermercado El Sol"
+            "detalles": "Supermercado El Sol",
+            "fecha": "2026-08-02T09:21:00+00:00"
         },
         {
-            "tipo": "transferencia_enviada",
+            "direction": "outflow",
             "monto": 45.0,
             "cliente_id": 1,
-            "detalles": "Envío a Carlos Pérez"
+            "detalles": "Envío a Carlos Pérez",
+            "fecha": "2026-08-02T13:28:00+00:00"
         },
         {
-            "tipo": "deposito",
+            "direction": "inflow",
             "monto": 350.0,
             "cliente_id": 1,
-            "detalles": "Reembolso Gastos de Viaje"
+            "detalles": "Reembolso Gastos de Viaje",
+            "fecha": "2026-08-02T17:35:00+00:00"
         },
         {
-            "tipo": "retiro",
+            "direction": "outflow",
             "monto": 32.0,
             "cliente_id": 1,
-            "detalles": "Gasolinera Shell"
+            "detalles": "Gasolinera Shell",
+            "fecha": "2026-08-03T09:42:00+00:00"
         },
         {
-            "tipo": "transferencia_enviada",
+            "direction": "outflow",
             "monto": 65.0,
             "cliente_id": 1,
-            "detalles": "Pago Servicio de Luz y Agua"
+            "detalles": "Pago Servicio de Luz y Agua",
+            "fecha": "2026-08-03T13:49:00+00:00"
         },
         {
-            "tipo": "deposito",
+            "direction": "inflow",
             "monto": 1200.0,
             "cliente_id": 1,
-            "detalles": "Venta Laptop Usada"
+            "detalles": "Venta Laptop Usada",
+            "fecha": "2026-08-03T17:56:00+00:00"
         },
         {
-            "tipo": "retiro",
+            "direction": "outflow",
             "monto": 12.99,
             "cliente_id": 1,
-            "detalles": "Suscripción Servicio Streaming"
+            "detalles": "Suscripción Servicio Streaming",
+            "fecha": "2026-08-04T09:03:00+00:00"
         },
         {
-            "tipo": "transferencia_enviada",
+            "direction": "outflow",
             "monto": 300.0,
             "cliente_id": 1,
-            "detalles": "Transferencia a Cuenta de Ahorros"
+            "detalles": "Transferencia a Cuenta de Ahorros",
+            "fecha": "2026-08-04T13:10:00+00:00"
         },
         {
-            "tipo": "retiro",
+            "direction": "outflow",
             "monto": 210.0,
             "cliente_id": 1,
-            "detalles": "Cena Restaurante La Casserole"
+            "detalles": "Cena Restaurante La Casserole",
+            "fecha": "2026-08-04T17:17:00+00:00"
         },
         {
-            "tipo": "deposito",
+            "direction": "inflow",
             "monto": 150.0,
             "cliente_id": 1,
-            "detalles": "Devolución Tienda de Ropa"
+            "detalles": "Devolución Tienda de Ropa",
+            "fecha": "2026-08-05T09:24:00+00:00"
         },
         {
-            "tipo": "transferencia_enviada",
+            "direction": "outflow",
             "monto": 80.0,
             "cliente_id": 1,
-            "detalles": "Pago Consulta Médica"
+            "detalles": "Pago Consulta Médica",
+            "fecha": "2026-08-05T13:31:00+00:00"
         },
         {
-            "tipo": "retiro",
+            "direction": "outflow",
             "monto": 45.8,
             "cliente_id": 1,
-            "detalles": "Farmacia San José"
+            "detalles": "Farmacia San José",
+            "fecha": "2026-08-05T17:38:00+00:00"
         },
         {
-            "tipo": "retiro",
+            "direction": "outflow",
             "monto": 200.0,
             "cliente_id": 1,
-            "detalles": "Cajero Automático Central"
+            "detalles": "Cajero Automático Central",
+            "fecha": "2026-08-06T09:45:00+00:00"
         },
         {
-            "tipo": "transferencia_enviada",
+            "direction": "outflow",
             "monto": 50.0,
             "cliente_id": 1,
-            "detalles": "Pago cena Carlos (Bizum)"
+            "detalles": "Pago cena Carlos (Bizum)",
+            "fecha": "2026-08-06T13:52:00+00:00"
         },
         {
-            "tipo": "deposito",
+            "direction": "outflow",
+            "monto": 42.15,
+            "cliente_id": 1,
+            "detalles": "Supermercado Mercadona",
+            "fecha": "2026-08-11T08:30:00+00:00"
+        },
+        {
+            "direction": "outflow",
+            "monto": 9.99,
+            "cliente_id": 1,
+            "detalles": "Suscripción Spotify Premium",
+            "fecha": "2026-08-11T10:15:00+00:00"
+        },
+        {
+            "direction": "outflow",
+            "monto": 3.50,
+            "cliente_id": 1,
+            "detalles": "Cafetería La Esquina",
+            "fecha": "2026-08-11T16:20:00+00:00"
+        },
+        {
+            "direction": "inflow",
+            "monto": 12.40,
+            "cliente_id": 1,
+            "detalles": "Cashback Tarjeta de Crédito",
+            "fecha": "2026-08-12T09:00:00+00:00"
+        },
+        {
+            "direction": "outflow",
+            "monto": 45.00,
+            "cliente_id": 1,
+            "detalles": "Cuota Cuotas Gimnasio FitLife",
+            "fecha": "2026-08-12T11:00:00+00:00"
+        },
+        {
+            "direction": "outflow",
+            "monto": 14.20,
+            "cliente_id": 1,
+            "detalles": "Viaje Uber Oficina",
+            "fecha": "2026-08-12T18:45:00+00:00"
+        },
+        {
+            "direction": "outflow",
+            "monto": 68.90,
+            "cliente_id": 1,
+            "detalles": "Compra Online Amazon",
+            "fecha": "2026-08-13T10:05:00+00:00"
+        },
+        {
+            "direction": "outflow",
+            "monto": 52.00,
+            "cliente_id": 1,
+            "detalles": "Almuerzo Restaurante El Asador",
+            "fecha": "2026-08-13T14:30:00+00:00"
+        },
+        {
+            "direction": "inflow",
+            "monto": 180.00,
+            "cliente_id": 1,
+            "detalles": "Venta Bicicleta Segunda Mano",
+            "fecha": "2026-08-13T19:10:00+00:00"
+        },
+        {
+            "direction": "outflow",
+            "monto": 55.00,
+            "cliente_id": 1,
+            "detalles": "Gasolinera Repsol",
+            "fecha": "2026-08-14T08:00:00+00:00"
+        },
+        {
+            "direction": "outflow",
+            "monto": 18.30,
+            "cliente_id": 1,
+            "detalles": "Farmacia Central",
+            "fecha": "2026-08-14T12:15:00+00:00"
+        },
+        {
+            "direction": "outflow",
+            "monto": 38.50,
+            "cliente_id": 1,
+            "detalles": "Cena Sushi Roll",
+            "fecha": "2026-08-14T21:30:00+00:00"
+        },
+        {
+            "direction": "inflow",
+            "monto": 29.99,
+            "cliente_id": 1,
+            "detalles": "Devolución Compra Amazon",
+            "fecha": "2026-08-15T10:00:00+00:00"
+        },
+        {
+            "direction": "outflow",
+            "monto": 6.80,
+            "cliente_id": 1,
+            "detalles": "Panadería y Pastelería Artesanal",
+            "fecha": "2026-08-15T11:30:00+00:00"
+        },
+        {
+            "direction": "outflow",
+            "monto": 22.00,
+            "cliente_id": 1,
+            "detalles": "Entradas Cine Cinesa",
+            "fecha": "2026-08-15T18:00:00+00:00"
+        },
+        {
+            "direction": "inflow",
+            "monto": 850.00,
+            "cliente_id": 1,
+            "detalles": "Cobro Trabajo Freelance Frontend",
+            "fecha": "2026-08-16T09:15:00+00:00"
+        },
+        {
+            "direction": "outflow",
+            "monto": 94.20,
+            "cliente_id": 1,
+            "detalles": "Supermercado Carrefour",
+            "fecha": "2026-08-16T11:45:00+00:00"
+        },
+        {
+            "direction": "outflow",
+            "monto": 20.00,
+            "cliente_id": 1,
+            "detalles": "Peluquería / Barbería Style",
+            "fecha": "2026-08-16T16:00:00+00:00"
+        },
+        {
+            "direction": "inflow",
+            "monto": 15.60,
+            "cliente_id": 1,
+            "detalles": "Pago Intereses Cuenta Remunerada",
+            "fecha": "2026-08-17T08:00:00+00:00"
+        },
+        {
+            "direction": "outflow",
+            "monto": 65.00,
+            "cliente_id": 1,
+            "detalles": "Cuota Seguro Vehículo",
+            "fecha": "2026-08-17T10:30:00+00:00"
+        },
+        {
+            "direction": "outflow",
+            "monto": 24.50,
+            "cliente_id": 1,
+            "detalles": "Librería La Central",
+            "fecha": "2026-08-17T17:20:00+00:00"
+        },
+        {
+            "direction": "inflow",
+            "monto": 35.00,
+            "cliente_id": 1,
+            "detalles": "Bizum recibido de María López",
+            "fecha": "2026-08-18T12:00:00+00:00"
+        },
+        {
+            "direction": "outflow",
+            "monto": 59.99,
+            "cliente_id": 1,
+            "detalles": "Factura Teléfono e Internet",
+            "fecha": "2026-08-18T15:10:00+00:00"
+        },
+        {
+            "direction": "outflow",
+            "monto": 28.00,
+            "cliente_id": 1,
+            "detalles": "Consumo Bar El Jardín",
+            "fecha": "2026-08-18T23:15:00+00:00"
+        },
+        {
+            "direction": "inflow",
+            "monto": 112.50,
+            "cliente_id": 1,
+            "detalles": "Dividendo Acciones Tech Corporate",
+            "fecha": "2026-08-19T09:30:00+00:00"
+        },
+        {
+            "direction": "inflow",
             "monto": 12000.0,
             "cliente_id": 2,
-            "detalles": "Transferencia Recibida Venta Coche"
+            "detalles": "Transferencia Recibida Venta Coche",
+            "fecha": "2026-08-06T17:59:00+00:00"
         },
         {
-            "tipo": "transferencia_enviada",
+            "direction": "outflow",
             "monto": 1500.0,
             "cliente_id": 2,
-            "detalles": "Alquiler mensual piso"
+            "detalles": "Alquiler mensual piso",
+            "fecha": "2026-08-07T09:06:00+00:00"
         },
         {
-            "tipo": "deposito",
+            "direction": "inflow",
             "monto": 50.0,
             "cliente_id": 3,
-            "detalles": "Bizum recibido de Juan Pérez"
+            "detalles": "Bizum recibido de Juan Pérez",
+            "fecha": "2026-08-07T13:13:00+00:00"
         },
         {
-            "tipo": "retiro",
+            "direction": "outflow",
             "monto": 100.0,
             "cliente_id": 3,
-            "detalles": "Cajero Automático"
+            "detalles": "Cajero Automático",
+            "fecha": "2026-08-07T17:20:00+00:00"
         },
         {
-            "tipo": "deposito",
+            "direction": "inflow",
             "monto": 45000.0,
             "cliente_id": 4,
-            "detalles": "Herencia familiar"
+            "detalles": "Herencia familiar",
+            "fecha": "2026-08-08T09:27:00+00:00"
         },
         {
-            "tipo": "transferencia_enviada",
+            "direction": "outflow",
             "monto": 1800.25,
             "cliente_id": 4,
-            "detalles": "Inversión Fondos Alpha"
+            "detalles": "Inversión Fondos Alpha",
+            "fecha": "2026-08-08T13:34:00+00:00"
         },
         {
-            "tipo": "retiro",
+            "direction": "outflow",
             "monto": 50.0,
             "cliente_id": 6,
-            "detalles": "Retiro efectivo"
+            "detalles": "Retiro efectivo",
+            "fecha": "2026-08-08T17:41:00+00:00"
         },
         {
-            "tipo": "transferencia_enviada",
+            "direction": "outflow",
             "monto": 120.0,
             "cliente_id": 7,
-            "detalles": "Pago Factura Luz"
+            "detalles": "Pago Factura Luz",
+            "fecha": "2026-08-09T09:48:00+00:00"
         },
         {
-            "tipo": "deposito",
+            "direction": "inflow",
             "monto": 2500.0,
             "cliente_id": 8,
-            "detalles": "Nómina Hospital Central"
+            "detalles": "Nómina Hospital Central",
+            "fecha": "2026-08-09T13:55:00+00:00"
         },
         {
-            "tipo": "transferencia_enviada",
+            "direction": "outflow",
             "monto": 340.0,
             "cliente_id": 8,
-            "detalles": "Compra Billete Avión"
+            "detalles": "Compra Billete Avión",
+            "fecha": "2026-08-09T17:02:00+00:00"
         },
         {
-            "tipo": "deposito",
+            "direction": "inflow",
             "monto": 15000.0,
             "cliente_id": 9,
-            "detalles": "Premio Lotería Local"
+            "detalles": "Premio Lotería Local",
+            "fecha": "2026-08-10T09:09:00+00:00"
         },
         {
-            "tipo": "transferencia_enviada",
+            "direction": "outflow",
             "monto": 40.5,
             "cliente_id": 10,
-            "detalles": "Suscripción Anual Streaming"
+            "detalles": "Suscripción Anual Streaming",
+            "fecha": "2026-08-10T13:16:00+00:00"
         }
     ],
     "FAQ" : [
@@ -300,6 +504,106 @@
             "cliente_id": 1,
             "nombre": "Sergio Ramos",
             "tel": "+34 600 556 101"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "Carlos Pérez",
+            "tel": "+34 611 223 344"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "María López",
+            "tel": "+34 622 334 455"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "Juan Pérez",
+            "tel": "+34 633 445 566"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "Laura Gómez",
+            "tel": "+34 644 556 677"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "Alejandro Rodríguez",
+            "tel": "+34 655 667 788"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "Sofía Martínez",
+            "tel": "+34 666 778 899"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "Javier Fernández",
+            "tel": "+34 677 889 900"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "Elena Sánchez",
+            "tel": "+34 688 990 011"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "Daniel Romero",
+            "tel": "+34 699 001 122"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "Lucía Navarro",
+            "tel": "+34 600 112 233"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "Manuel Torres",
+            "tel": "+34 611 334 422"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "Carmen Ruiz",
+            "tel": "+34 622 445 533"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "Pablo Iglesias",
+            "tel": "+34 633 556 644"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "Marta Serrano",
+            "tel": "+34 644 667 755"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "Diego Morales",
+            "tel": "+34 655 778 866"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "Paula Molina",
+            "tel": "+34 666 889 977"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "David Castro",
+            "tel": "+34 677 990 088"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "Andrea Ortega",
+            "tel": "+34 688 001 199"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "Hugo Delgado",
+            "tel": "+34 699 112 200"
+        },
+        {
+            "cliente_id": 1,
+            "nombre": "Alba Marín",
+            "tel": "+34 600 223 311"
         },
         {
             "cliente_id": 2,

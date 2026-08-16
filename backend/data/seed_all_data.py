@@ -1,12 +1,13 @@
 # This program fills up our database with the mock banking information.
 import json
 import os
+from datetime import datetime
 from decimal import Decimal
 
 from dotenv import load_dotenv
 from langchain_openai import OpenAIEmbeddings
 from sqlmodel import Session, SQLModel, create_engine, select
-from src.models import FAQ, Cliente, Contacto, Transaccion
+from src.models import FAQ, Cliente, Contacto, Direction, Transaccion
 from src.services.categorizador import obtener_categoria
 
 # We load the postgresql database information.
@@ -59,11 +60,12 @@ def populate_banking_system():
             new_id_client = mapa_clientes.get(t["cliente_id"])
             
             new_transaccion = Transaccion(
-                tipo=t["tipo"],
+                direction=Direction.INFLOW if t["direction"] == "inflow" else Direction.OUTFLOW,
                 monto=Decimal(str(t["monto"])),
                 detalles=t["detalles"],
                 categoria=obtener_categoria(t["detalles"]), # Obtain the category of the transaction.
-                cliente_id = new_id_client
+                cliente_id = new_id_client,
+                fecha = datetime.fromisoformat(t["fecha"])
             )
             session.add(new_transaccion)
             print(f"Transacción '{new_transaccion.detalles}' introducida con id '{new_transaccion.id}'")
@@ -131,6 +133,7 @@ def populate_faq():
         print("Se han introducido todoas las preguntas y respuestas.")
 
 if __name__ == "__main__":
+    drop_all_tables()
     create_db_and_tables()
     populate_banking_system()
     populate_faq()

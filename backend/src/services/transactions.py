@@ -5,7 +5,7 @@ from decimal import Decimal
 
 from sqlmodel import select
 from src.database import get_session
-from src.models import Cliente, Transaccion
+from src.models import Cliente, Direction, Transaccion
 from src.services.categorizador import obtener_categoria
 from src.services.phone import verify_phone_number
 
@@ -61,7 +61,7 @@ def read_transactions_info (client_id: int,
         if category:
             statement = statement.where(Transaccion.categoria == category)
 
-        statement = statement.order_by(Transaccion.fecha.desc()).limit(20) # Maybe the limit should be changed for charting functions.
+        statement = statement.order_by(Transaccion.fecha.asc()).limit(50) # Maybe the limit should be changed for charting functions.
 
         # We execute the statement built from all the previous steps.
         result = session.exec(statement).all()
@@ -70,9 +70,9 @@ def read_transactions_info (client_id: int,
         if result:
             transacciones_json = [
                 {
-                    "fecha": tx.fecha.strftime('%Y-%m-%d'),
+                    "fecha": tx.fecha.strftime('%d-%m-%y'),
                     "cantidad": float(tx.monto),
-                    "tipo": tx.tipo,
+                    "direction": tx.direction,
                     "descripcion": tx.detalles,
                     "categoria": tx.categoria
                 }
@@ -126,7 +126,7 @@ def make_transfer(client_id: int, amount_f:float, concepto: str, tel: str) -> st
 
                 # We add the transaction to the database.
                 nueva_trans = Transaccion (
-                    tipo = "transferencia_enviada",
+                    direction = Direction.OUTFLOW,
                     monto = amount_d,
                     detalles = concepto,
                     categoria = obtener_categoria(concepto),
