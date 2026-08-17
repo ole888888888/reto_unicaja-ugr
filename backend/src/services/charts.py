@@ -52,9 +52,9 @@ def get_echart_config(
     for s in series:
         s_dict = s.model_dump(mode="json", exclude_none=True, by_alias=True)
 
-        if s.type == chartType.LINE:
-            s_dict.setdefault("areaStyle", {})
-            s_dict.setdefault("smooth", True)
+        #if s.type == chartType.LINE:
+        #    s_dict.setdefault("areaStyle", {})
+        #    s_dict.setdefault("smooth", True)
 
         formatted_series.append(s_dict)
 
@@ -71,5 +71,8 @@ def get_echart_config(
     if not is_pie:
         option["xAxis"] = {"type": "category", "data": x_axis_categories}
         option["yAxis"] = {"type": "value"}
+
+    if title:
+        option["title"] = {"text": title}
 
     return option

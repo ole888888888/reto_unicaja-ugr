@@ -2,6 +2,7 @@
 import json
 from datetime import datetime
 from decimal import Decimal
+from typing import Any
 
 from sqlmodel import select
 from src.database import get_session

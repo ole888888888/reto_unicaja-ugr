@@ -20,7 +20,7 @@ export default function App() {
             message={msg}
             isLoading={isLoading}
             isLast={index === messages.length - 1}
-            chart_theme={theme}
+            chartTheme={theme}
           />
         ))}
         <div ref={chatEndRef} />

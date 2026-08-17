@@ -13,7 +13,8 @@
     "echarts": "^6.1.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-echarts-library": "^1.4.0"
+    "react-echarts-library": "^1.4.0",
+    "react-spinners": "^0.17.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

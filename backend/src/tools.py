@@ -90,7 +90,7 @@ def read_transactions_information( config: RunnableConfig,
             (e.g., 'supermarket', 'restaurants', 'transfers'). Defaults to None.
 
     Returns:
-        str: A string listing the matching transactions or an error message if the
+        str: A  list of the matching transactions or an error message if the
             user is not authenticated.
     """
 
@@ -248,12 +248,12 @@ def create_table (
     ) -> list[dict[str,Any]]:
     """
     Generates a structured table view for the user. Use this tool whenever presenting 
-    tabular data like transaction histories, user lists, or search results.
+    tabular data like contacts lists, transactions, or search results.
 
     Args:
         data: A list of key-value dictionaries representing table rows. 
               Keys are column headers, values are cell entries.
-              Example: [{"Date": "2026-08-01", "Concept": "Supermarket", "Amount": "45.00 €"}]
+              Example: [{"Name": "John Doe", "tel": "123456789"]
     """
     return data
 

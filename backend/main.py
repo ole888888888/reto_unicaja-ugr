@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from langchain_core.messages import AIMessageChunk, ToolMessage
 from pydantic import BaseModel
-from src.agent import agent_executor
+from src.agent import agent_executor, model
 from src.database import init_db
 
 # Import enviroment variables.
@@ -48,7 +48,12 @@ async def run_python_agent(prompt: str):
         stream_mode="messages"
     ):
         # We process data differently depending on the type of data it is.
-        if isinstance(chunk, AIMessageChunk) and chunk.content and isinstance(chunk.content, str):
+        if (
+            isinstance(chunk, AIMessageChunk) and
+            chunk.content and
+            isinstance(chunk.content, str) and
+            metadata.get("ls_model_name") == model
+        ):
             payload = json.dumps({"text": chunk.content})
             yield f"data: {payload}\n\n"
             await asyncio.sleep(0)

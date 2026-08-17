@@ -4,13 +4,14 @@ import * as echarts from 'echarts';
 import RenderTable from './RenderTable';
 import darkTheme from '../assets/dark_theme.json';
 import lightTheme from '../assets/light_theme.json';
+import { ScaleLoader } from 'react-spinners'
 
 export function ChatMessage({ message, isLoading, isLast, chartTheme }) {
   const isUser = message.role === 'user';
-  const content = message.content || (isLoading && isLast ? 'Pensando...' : '');
+  const content = message.content;
 
   // To avoid printing empty bubbles on screen.
-  if (content === '' && message.type === 'text') return
+  // if (content === '' && message.type === 'text') return
 
   if (message.type === 'chart' && message.chartConfig) {
     const chartOption =
@@ -53,7 +54,17 @@ export function ChatMessage({ message, isLoading, isLast, chartTheme }) {
           ...(isUser ? styles.userBubble : styles.assistantBubble),
         }}
       >
-        {content}
+          {isLoading && !content ? (
+          <ScaleLoader 
+            color={'#36d7b7'} 
+            height={10} 
+            margin={1}
+            speedMultiplier={1.5}
+             barCount={10}
+          />
+        ) : (
+          content
+        )}
       </div>
     </div>
   );

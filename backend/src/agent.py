@@ -1,10 +1,13 @@
 from langchain.agents import create_agent
+from langchain.agents.middleware import LLMToolSelectorMiddleware
 from langchain.chat_models import init_chat_model
 from langgraph.checkpoint.memory import InMemorySaver
 from src.tools import tools as tool_list
 
+model = "gpt-4o"
+
 # Initialize the model
-llm = init_chat_model(model="gpt-4o", temperature=0)
+llm = init_chat_model(model=model, temperature=0)
 
 # LLM instructions are configured in the system_instructions
 system_instructions = (
@@ -24,9 +27,10 @@ You are an Administrative Assistant responsible for assisting users with their b
 
 # Tool Execution & Output Rules
 - **Silent Tool Calls:** When you execute `create_table` or `create_chart`, the tool handles all visual rendering completely. 
-- **NO Text Around Visual Tools:** You MUST NOT output any text before, alongside, or after invoking `create_table` or `create_chart` (no introductory remarks, summaries, explanations, or Markdown tables like `| Column | ...`). Your output must consist strictly of the tool call execution.
-- **Users don't really care for backend variables, so avoid showing data like transaction direction and such things.
-- **It's REALLY IMPORTANT that you take cash flow into account, expenses are not the same as earnings.
+- **NO Text Around Visual Tools:** You MUST NOT output any text before, alongside, or after invoking `create_table` or `create_chart` (no introductory remarks, summaries, explanations, or Markdown tables like `| Column | ...`). Your output must consist strictly of the tool call execution.**
+- **Users don't really care for backend variables, so avoid showing data like transaction direction and such things.**
+- **It's REALLY IMPORTANT that you take cash flow into account, expenses are not the same as earnings.**
+- **For longer running tools like making charts and tables send a message before executing the tool to let know it might take longer.**
 """
 )
 
@@ -34,5 +38,11 @@ agent_executor = create_agent(
     model=llm,
     tools=tool_list,
     system_prompt=system_instructions,
-    checkpointer=InMemorySaver()
+    checkpointer=InMemorySaver(),
+    middleware=[
+        LLMToolSelectorMiddleware(
+            model="gpt-5.4-mini",
+            max_tools=3
+        ),
+    ]
 )
