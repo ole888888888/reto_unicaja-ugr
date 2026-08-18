@@ -11,7 +11,8 @@ export function ChatMessage({ message, isLoading, isLast, chartTheme }) {
   const content = message.content;
 
   // To avoid printing empty bubbles on screen.
-  // if (content === '' && message.type === 'text') return
+  if (content === '' && message.type === 'text' && !isLoading)
+    return
 
   if (message.type === 'chart' && message.chartConfig) {
     const chartOption =

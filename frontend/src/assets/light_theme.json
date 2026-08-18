@@ -34,7 +34,10 @@
         },
         "symbolSize": "8",
         "symbol": "emptyCircle",
-        "smooth": false
+        "smooth": false,
+       "areaStyle": {
+        "origin": "auto"
+        }
     },
     "radar": {
         "itemStyle": {
@@ -57,6 +60,9 @@
         "itemStyle": {
             "borderWidth": 0,
             "borderColor": "#ccc"
+        },
+        "label": {
+            "color": "#000"
         }
     },
     "scatter": {
@@ -394,7 +400,7 @@
     "grid": {
         "left": "15%",
         "right": "10%",
-        "top": 25,
+        "top": 80,
         "bottom": 60
     }
 }

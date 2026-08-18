@@ -38,7 +38,6 @@
     },
     "symbolSize": "8",
     "symbol": "emptyCircle",
-    "smooth": true,
     "areaStyle": {
       "origin": "auto"
     }
@@ -62,14 +61,12 @@
   },
   "pie": {
     "itemStyle": {
-      "borderWidth": 0
+      "borderWidth": 0,
+      "borderColor": "#ccc"
     },
     "label": {
-        "color":"#ffffff",
-        "textBorderWidth": 0,
-        "textBorderColor": "transparent"
-    },
-    "radius": ["5%","60%"]
+      "color": "#fff"
+    }
   },
   "scatter": {
     "itemStyle": {
@@ -407,7 +404,7 @@
   "grid": {
     "left": "15%",
     "right": "10%",
-    "top": 25,
+    "top": 80,
     "bottom": 60
   }
 }
